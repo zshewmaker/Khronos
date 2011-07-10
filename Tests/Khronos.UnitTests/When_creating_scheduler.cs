@@ -12,9 +12,9 @@ namespace Khronos.UnitTests
 		{
 			ISchedulerFactory factory = new DefaultSchedulerFactory();
 
-			var result = factory.Create();
+			var scheduler = factory.Create();
 
-			Assert.That(result, Is.InstanceOf<DefaultScheduler>());
+			Assert.That(scheduler, Is.InstanceOf<DefaultScheduler>());
 		}
 
 		[Test]
@@ -24,11 +24,38 @@ namespace Khronos.UnitTests
 			container.Register(Component.For<IScheduler>().ImplementedBy<TestScheduler>());
 
 			var factory = new DefaultSchedulerFactory();
-			var result = factory.UseContainer(() => new CastleServiceLocator(container)).Create();
+			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
 
-			Assert.That(result, Is.InstanceOf<TestScheduler>());
+			Assert.That(scheduler, Is.InstanceOf<TestScheduler>());
 		}
 
-		private class TestScheduler : IScheduler{}
+		[Test]
+		public void Should_return_DefaultScheduler_if_container_set_but_scheduler_not_registered()
+		{
+			var container = new WindsorContainer();
+			container.Register();
+
+			var factory = new DefaultSchedulerFactory();
+			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
+
+			Assert.That(scheduler, Is.InstanceOf<DefaultScheduler>());
+		}
+
+
+		private class TestScheduler : IScheduler
+		{
+			public IScheduler Setup(params ScheduledJob[] newScheduledJobs)
+			{
+				return null;
+			}
+
+			public void Start()
+			{
+			}
+
+			public void Stop()
+			{
+			}
+		}
 	}
 }

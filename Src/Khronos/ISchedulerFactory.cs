@@ -10,20 +10,20 @@ namespace Khronos
 
 	public class DefaultSchedulerFactory : ISchedulerFactory
 	{
-		private bool useServiceLocator;
-
 		public IScheduler Create()
 		{
-			if (useServiceLocator)
+			try
 			{
 				return ServiceLocator.Current.GetInstance<IScheduler>();
 			}
-			return new DefaultScheduler();
+			catch
+			{
+				return new DefaultScheduler();
+			}
 		}
 
 		public ISchedulerFactory UseContainer(ServiceLocatorProvider serviceProvider)
 		{
-			useServiceLocator = true;
 			ServiceLocator.SetLocatorProvider(serviceProvider);
 			return this;
 		}

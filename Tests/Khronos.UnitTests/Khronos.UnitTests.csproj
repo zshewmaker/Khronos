@@ -52,9 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CastleServiceLocator.cs" />
+    <Compile Include="CastleServiceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_creating_scheduler.cs" />
+    <Compile Include="When_scheduling_jobs_with_container.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Src\Khronos\Khronos.csproj">
