@@ -1,5 +1,6 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using CommonServiceLocator.WindsorAdapter;
 using NUnit.Framework;
 
 namespace Khronos.UnitTests
@@ -24,7 +25,7 @@ namespace Khronos.UnitTests
 			container.Register(Component.For<IScheduler>().ImplementedBy<TestScheduler>());
 
 			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
+			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			Assert.That(scheduler, Is.InstanceOf<TestScheduler>());
 		}
@@ -36,7 +37,7 @@ namespace Khronos.UnitTests
 			container.Register();
 
 			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
+			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			Assert.That(scheduler, Is.InstanceOf<DefaultScheduler>());
 		}

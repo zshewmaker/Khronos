@@ -2,6 +2,7 @@
 using System.Threading;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using CommonServiceLocator.WindsorAdapter;
 using NUnit.Framework;
 
 namespace Khronos.UnitTests
@@ -17,7 +18,7 @@ namespace Khronos.UnitTests
 			container.Register(Component.For<TestJob>().Instance(testJob));
 
 			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
+			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			scheduler.Setup(
 				Job<TestJob>.Run(x => x.RunJob()).Every(1.Second())
@@ -42,7 +43,7 @@ namespace Khronos.UnitTests
 				Component.For<TestJob2>().Instance(testJob2));
 
 			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new CastleServiceProvider(container)).Create();
+			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			scheduler.Setup(
 				Job<TestJob>.Run(x => x.RunJob()).Every(1.Second()),
@@ -60,7 +61,7 @@ namespace Khronos.UnitTests
 
 		private class TestJob
 		{
-			public int TimesCalled { get; set; }
+			public int TimesCalled { get; private set; }
 
 			public TestJob()
 			{
@@ -75,7 +76,7 @@ namespace Khronos.UnitTests
 
 		private class TestJob2
 		{
-			public int TimesCalled { get; set; }
+			public int TimesCalled { get; private set; }
 
 			public TestJob2()
 			{
