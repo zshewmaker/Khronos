@@ -1,0 +1,13 @@
+Currently only supports interval based scheduling. Also, currently requires job services to be registered with a dependency injection framework (using the Microsoft CommonServiceLocator).
+
+Usage:
+
+var factory = new DefaultSchedulerFactory();
+var scheduler = factory
+	.UseContainer(() => new CastleServiceProvider(container))
+	.Create();
+
+scheduler.Setup(
+	Job<TestJob>.Run(x => x.RunJob()).Every(1.Second()),
+	Job<TestJob2>.Run(x => x.RunJob()).Every(2.Seconds())
+).Start();
