@@ -45,7 +45,7 @@ namespace Khronos.UnitTests
 
 		private class TestScheduler : IScheduler
 		{
-			public IScheduler Setup(params ScheduledJob[] newScheduledJobs)
+			public IScheduler Setup(params Job[] newJobs)
 			{
 				return null;
 			}

@@ -17,11 +17,10 @@ namespace Khronos.UnitTests
 			var testJob = new TestJob();
 			container.Register(Component.For<TestJob>().Instance(testJob));
 
-			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
+			var scheduler = new DefaultSchedulerFactory().UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			scheduler.Setup(
-				Job<TestJob>.Run(x => x.RunJob()).Every(1.Second())
+				Job.Run<TestJob>(x => x.RunJob()).Every(1.Second())
 				).Start();
 
 			Thread.Sleep(TimeSpan.FromSeconds(5));
@@ -42,12 +41,11 @@ namespace Khronos.UnitTests
 				Component.For<TestJob>().Instance(testJob),
 				Component.For<TestJob2>().Instance(testJob2));
 
-			var factory = new DefaultSchedulerFactory();
-			var scheduler = factory.UseContainer(() => new WindsorServiceLocator(container)).Create();
+			var scheduler = new DefaultSchedulerFactory().UseContainer(() => new WindsorServiceLocator(container)).Create();
 
 			scheduler.Setup(
-				Job<TestJob>.Run(x => x.RunJob()).Every(1.Second()),
-				Job<TestJob2>.Run(x => x.RunJob()).Every(2.Seconds())
+				Job.Run<TestJob>(x => x.RunJob()).Every(1.Second()),
+				Job.Run<TestJob2>(x => x.RunJob()).Every(2.Seconds())
 				).Start();
 
 			Thread.Sleep(TimeSpan.FromSeconds(6));

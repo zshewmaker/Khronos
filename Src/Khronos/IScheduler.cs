@@ -5,23 +5,23 @@ namespace Khronos
 {
 	public interface IScheduler
 	{
-		IScheduler Setup(params ScheduledJob[] newScheduledJobs);
+		IScheduler Setup(params Job[] newJobs);
 		void Start();
 		void Stop();
 	}
 
 	public class DefaultScheduler : IScheduler
 	{
-		private IEnumerable<ScheduledJob> scheduledJobs;
+		private IEnumerable<Job> scheduledJobs;
 
 		public DefaultScheduler()
 		{
-			scheduledJobs = new List<ScheduledJob>();
+			scheduledJobs = new List<Job>();
 		}
 
-		public IScheduler Setup(params ScheduledJob[] newScheduledJobs)
+		public IScheduler Setup(params Job[] newJobs)
 		{
-			scheduledJobs = scheduledJobs.Concat(newScheduledJobs);
+			scheduledJobs = scheduledJobs.Concat(newJobs);
 			return this;
 		}
 

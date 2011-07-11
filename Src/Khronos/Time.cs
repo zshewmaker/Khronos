@@ -33,5 +33,20 @@ namespace Khronos
 		{
 			return TimeSpan.FromHours(interval);
 		}
+
+		public static TimeSpan Seconds(this double interval)
+		{
+			return TimeSpan.FromSeconds(interval);
+		}
+		
+		public static TimeSpan Minutes(this double interval)
+		{
+			return TimeSpan.FromMinutes(interval);
+		}
+
+		public static TimeSpan Hours(this double interval)
+		{
+			return TimeSpan.FromHours(interval);
+		}
 	}
 }

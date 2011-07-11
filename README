@@ -1,13 +1,35 @@
-Currently only supports interval based scheduling. Also, currently requires job services to be registered with a dependency injection framework (using the Microsoft CommonServiceLocator).
+Currently only supports interval based scheduling. 
 
-Usage:
+Usage (with container):
 
-var factory = new DefaultSchedulerFactory();
+var container = new WindsorContainer();
+container.Register(Component.For<TestJob>(), Component.For<TestJob2>());
+
+ISchedulerFactory factory = new DefaultSchedulerFactory();
 var scheduler = factory
-	.UseContainer(() => new CastleServiceProvider(container))
+	.UseContainer(() => new WindsorServiceLocator(container))
 	.Create();
+	
+scheduler.Setup(
+	Job.Run<TestJob>(x => x.RunJob()).Every(1.Second()),
+	Job.Run<TestJob2>(x => x.RunJob()).Every(10.Seconds())
+	).Start();
+
+
+Usage (without container, providing instance):
+
+var testJob = new TestJob2();
+var scheduler = new DefaultSchedulerFactory().Create();
 
 scheduler.Setup(
-	Job<TestJob>.Run(x => x.RunJob()).Every(1.Second()),
-	Job<TestJob2>.Run(x => x.RunJob()).Every(2.Seconds())
-).Start();
+	Job.Run(testJob.RunJob).Every(10.Minutes())
+	).Start();
+
+
+Usage (without container, letting Khronos create instance):
+
+var scheduler = new DefaultSchedulerFactory().Create();
+
+scheduler.Setup(
+	Job.Run<TestJob>(x => x.RunJob()).Every(2.Hours())
+	).Start();
