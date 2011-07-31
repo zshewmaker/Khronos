@@ -13,7 +13,7 @@ namespace Khronos
 		public void Start()
 		{
 			timer = Observable.Interval(interval);
-			timer.Subscribe(x => action.Invoke());
+			timer.Subscribe(x => action());
 		}
 
 		public void Stop()
@@ -40,7 +40,7 @@ namespace Khronos
 
 		public static Job Run<T>(Action<T> action)
 		{
-			return new Job(() => action.Invoke(GetServiceInstance<T>()));
+			return new Job(() => action(GetServiceInstance<T>()));
 		}
 
 		public static Job Run(Action action)
